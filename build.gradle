@@ -10,3 +10,21 @@ buildscript {
 apply plugin: "idea"
 apply plugin: 'java'
 apply plugin: "org.flywaydb.flyway"
+
+flyway {
+    driver = 'com.mysql.jdbc.Driver'
+    url = "jdbc:mysql://127.0.0.1:3306/flyway_dev"
+    user = 'mysql'
+    password = 'mysql'
+    table = 'flyway_dev_schema_version'
+    locations = ["filesystem:${projectDir}/src/main/resources/db/migration/mysql"]
+    sqlMigrationPrefix = 'MySQL-'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'mysql:mysql-connector-java:5.1.34'
+}
