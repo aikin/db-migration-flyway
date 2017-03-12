@@ -11,11 +11,15 @@ apply plugin: "idea"
 apply plugin: 'java'
 apply plugin: "org.flywaydb.flyway"
 
+def env = project.hasProperty('env') ? env : 'dev'
+def properties = new Properties()
+properties.load(project.file("./config/${env}/db.properties").newReader())
+
 flyway {
     driver = 'com.mysql.jdbc.Driver'
-    url = "jdbc:mysql://127.0.0.1:3306/flyway_dev"
-    user = 'mysql'
-    password = 'mysql'
+    url = properties.get('db.url')
+    user = properties.get('db.user')
+    password = properties.get('db.password')
     table = 'flyway_dev_schema_version'
     locations = ["filesystem:${projectDir}/src/main/resources/db/migration/mysql"]
     sqlMigrationPrefix = 'MySQL-'
